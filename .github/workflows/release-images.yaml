@@ -26,11 +26,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v4
-        with:
-          go-version: ">=1.21.0"
-      - run: go version
-    
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.4.0
 
@@ -49,15 +44,14 @@ jobs:
             IMAGE_NAMESPACE=${{ github.repository }} \
             PLATFORM=${{ matrix.platform }}/${{ matrix.arch }} \
             BUILDX_ACTION=--push
-      
+
       - name: Sign container image
         run: |
           for image in \
-            ghcr.io/${{ github.repository }}/retina-agent:$TAG \
             ghcr.io/${{ github.repository }}/retina-agent:$TAG-${{ matrix.platform }}-${{ matrix.arch }} \
-            ghcr.io/${{ github.repository }}/retina-init:$TAG \ 
             ghcr.io/${{ github.repository }}/retina-init:$TAG-${{ matrix.platform }}-${{ matrix.arch }} \
           ; do
+            docker pull ${image}
             DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${image})
             cosign sign --yes ${DIGEST} 
           done
@@ -75,14 +69,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v4
-        with:
-          go-version: ">=1.21.0"
-      - run: go version
-
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.4.0
-      
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -106,7 +95,8 @@ jobs:
             ghcr.io/${{ github.repository }}/retina-init:$TAG-windows-ltsc2019-${{ matrix.arch }} \
             ghcr.io/${{ github.repository }}/retina-agent:$TAG-windows-ltsc2022-${{ matrix.arch }} \
             ghcr.io/${{ github.repository }}/retina-init:$TAG-windows-ltsc2022-${{ matrix.arch }} \
-          ; do 
+          ; do
+            docker pull ${image}
             DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${image})
             cosign sign --yes ${DIGEST}
           done
@@ -124,11 +114,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v4
-        with:
-          go-version: ">=1.21.0"
-      - run: go version
-    
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.4.0
 
@@ -147,13 +132,14 @@ jobs:
             IMAGE_NAMESPACE=${{ github.repository }} \
             PLATFORM=${{ matrix.platform }}/${{ matrix.arch }} \
             BUILDX_ACTION=--push
-          
+
       - name: Sign container image
         run: |
           for image in \
             ghcr.io/${{ github.repository }}/retina-operator:$TAG \
             ghcr.io/${{ github.repository }}/retina-operator:$TAG-${{ matrix.platform }}-${{ matrix.arch }} \
           ; do
+            docker pull ${image}
             DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${image})
             cosign sign --yes ${DIGEST}
           done
@@ -171,6 +157,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.4.0
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -184,3 +173,15 @@ jobs:
           make manifest \
             IMAGE_NAMESPACE=${{ github.repository }} \
             COMPONENT=${{ matrix.component }}
+
+      - name: Sign manifests
+        run: |
+          for image in \
+            ghcr.io/${{ github.repository }}/retina-agent:$TAG \
+            ghcr.io/${{ github.repository }}/retina-init:$TAG \
+            ghcr.io/${{ github.repository }}/retina-operator:$TAG \
+          ; do
+            docker pull ${image}
+            DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${image})
+            cosign sign --yes ${DIGEST} 
+          done
