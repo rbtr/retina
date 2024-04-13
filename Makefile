@@ -26,6 +26,7 @@ GENERATE_TARGET_DIRS = \
 	./pkg/plugin/linuxutil
 
 # Default platform is linux/amd64
+GOCACHE			?= $(shell go env GOCACHE)
 GOOS			?= linux
 GOARCH			?= amd64
 OS				?= $(GOOS)
@@ -215,6 +216,7 @@ container-docker: buildx # util target to build container images using docker bu
 		--metadata-file=$$image_metadata_filename \
 		-f $(DOCKERFILE) \
 		--build-arg VERSION=$(VERSION) $(EXTRA_BUILD_ARGS) \
+		--build-arg GOCACHE=$(GOCACHE) \
 		--build-arg GOOS=$$os \
 		--build-arg GOARCH=$$arch \
 		--build-arg APP_INSIGHTS_ID=$(APP_INSIGHTS_ID) \
