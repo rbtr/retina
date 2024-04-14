@@ -27,6 +27,7 @@ GENERATE_TARGET_DIRS = \
 
 # Default platform is linux/amd64
 GOCACHE			?= $(shell go env GOCACHE)
+GOMODCACHE		?= $(shell go env GOMODCACHE)
 GOOS			?= linux
 GOARCH			?= amd64
 OS				?= $(GOOS)
@@ -217,6 +218,7 @@ container-docker: buildx # util target to build container images using docker bu
 		-f $(DOCKERFILE) \
 		--build-arg VERSION=$(VERSION) $(EXTRA_BUILD_ARGS) \
 		--build-arg GOCACHE=$(GOCACHE) \
+		--build-arg GOMODCACHE=$(GOMODCACHE) \
 		--build-arg GOOS=$$os \
 		--build-arg GOARCH=$$arch \
 		--build-arg APP_INSIGHTS_ID=$(APP_INSIGHTS_ID) \

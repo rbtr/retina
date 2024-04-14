@@ -37,11 +37,13 @@ ARG APP_INSIGHTS_ID
 
 ARG GOCACHE=/root/.cache/go-build
 ENV GOCACHE $GOCACHE
+ARG GOMODCACHE=/go/pkg/mod
+ENV GOMODCACHE $GOMODCACHE
 
-RUN --mount=type=cache,target="$GOCACHE" go build -v -o /go/bin/retina/controller -ldflags "-X main.version="$VERSION" -X "main.applicationInsightsID"="$APP_INSIGHTS_ID"" controller/main.go 
-RUN --mount=type=cache,target="$GOCACHE" go build -v -o /go/bin/retina/captureworkload -ldflags "-X main.version="$VERSION" -X "main.applicationInsightsID"="$APP_INSIGHTS_ID"" captureworkload/main.go
+RUN --mount=type=cache,target="$GOCACHE" --mount=type=cache,target="$GOMODCACHE" go build -v -o /go/bin/retina/controller -ldflags "-X main.version="$VERSION" -X "main.applicationInsightsID"="$APP_INSIGHTS_ID"" controller/main.go 
+RUN --mount=type=cache,target="$GOCACHE" --mount=type=cache,target="$GOMODCACHE" go build -v -o /go/bin/retina/captureworkload -ldflags "-X main.version="$VERSION" -X "main.applicationInsightsID"="$APP_INSIGHTS_ID"" captureworkload/main.go
 # We only build initretina for linux.
-RUN --mount=type=cache,target="$GOCACHE" go build -v -o /go/bin/retina/initretina -ldflags "-X main.version="$VERSION" -X "main.applicationInsightsID"="$APP_INSIGHTS_ID"" ././init/retina/main_linux.go
+RUN --mount=type=cache,target="$GOCACHE" --mount=type=cache,target="$GOMODCACHE" go build -v -o /go/bin/retina/initretina -ldflags "-X main.version="$VERSION" -X "main.applicationInsightsID"="$APP_INSIGHTS_ID"" ././init/retina/main_linux.go
 
 # ----------------------------------------------------------------------------------- #
 
