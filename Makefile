@@ -217,7 +217,9 @@ container-docker: buildx # util target to build container images using docker bu
 		--metadata-file=$$image_metadata_filename \
 		-f $(DOCKERFILE) \
 		--build-arg VERSION=$(VERSION) $(EXTRA_BUILD_ARGS) \
+		--build-context gocache=$(GOCACHE) \
 		--build-arg GOCACHE=$(GOCACHE) \
+		--build-context gomodcache=$(GOMODCACHE) \
 		--build-arg GOMODCACHE=$(GOMODCACHE) \
 		--build-arg GOOS=$$os \
 		--build-arg GOARCH=$$arch \
