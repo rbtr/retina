@@ -25,7 +25,7 @@ Additional information about Git's use of GPG can be found [here](https://git-sc
 
 ## Developers Certificate of Origin (DCO)
 
-Contributions to Retina must contain a Developers Certificate of Origin within their constituent commits.
+Contributions to Retina must contain a Developersdsfasdf Certificate of Origin within their constituent commits.
 This can be accomplished by providing a `-s` flag to `git commit` as documented [here](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt--s).
 This will add a `Signed-off-by` trailer to your Git commit, affirming your acceptance of the Contributor License Agreement.
 
