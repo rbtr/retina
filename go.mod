@@ -106,7 +106,6 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
-	github.com/google/gopacket v1.1.19 // indirect
 	github.com/google/pprof v0.0.0-20240424215950-a892ee059fd6 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
@@ -283,6 +282,7 @@ require (
 	github.com/cilium/cilium v1.15.4
 	github.com/cilium/ebpf v0.15.0
 	github.com/florianl/go-tc v0.4.3
+	github.com/google/gopacket v1.1.19
 	github.com/inspektor-gadget/inspektor-gadget v0.27.0
 	github.com/jellydator/ttlcache/v3 v3.1.1
 	github.com/jsternberg/zap-logfmt v1.3.0
